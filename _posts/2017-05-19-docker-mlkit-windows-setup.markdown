@@ -13,7 +13,7 @@ categories: docker tutorial
 
 Today I tried or better I installed the components are necessary to run Dockers mobyprojekt and linuxkit on windows.
 
-Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use GitBash or PowerShell to use make commands and stuff like that. So keep reading :).
+Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use GitBash or PowerShell to fire commands and stuff like that. So keep reading :).
 
 ![spongebob keep reading](https://media.giphy.com/media/WoWm8YzFQJg5i/giphy.gif?response_id=591f663d3fe17e6328d17717)
 
