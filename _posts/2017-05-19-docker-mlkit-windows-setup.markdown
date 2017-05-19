@@ -101,7 +101,10 @@ On my machine the make process <span style="color: red"> failed</span>. Running 
 
 ![Linuxkitmake error]({{ site.url }}/assets/3linuxkitmakeerr.png)
 
-I will work on that error later and check whats wrong here. For me and now I decided to use the “go-way” building the binaries. Let's rock.
+I will work on that error later and check whats wrong here.
+Update: [#1863](https://github.com/linuxkit/linuxkit/issues/1863) opened. The Makefile is using an incorrect GOOS value.
+
+For me and now I decided to use the “go-way” building the binaries. Let's rock.
 
 You can run the commands show in the linuxkit github repo.
 
