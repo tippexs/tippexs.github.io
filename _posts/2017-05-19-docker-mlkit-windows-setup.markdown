@@ -11,7 +11,7 @@ categories: docker tutorial
   Windows10 Pro with Hyper-V and 60min of your time.
 
 
-Today I tried or better I installed the components are necessary to run Dockers mobyprojekt and linuxkit on windows.
+Today, I tried or better I installed the components are necessary to run Dockers mobyprojekt and linuxkit on windows.
 
 Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use GitBash or PowerShell to fire commands and stuff like that. So keep reading :).
 
@@ -19,10 +19,10 @@ Before we can start building an image we should check a couple of pre-requiremen
 
 #### Before you can start ... 
 
-Before we can start you should check your system environment is ready for it. We will need a couple of additional programs / tools to work with this tutorial.
+Before we can start you need to make sure your system environment is ready to go. We will need a couple of additional programs / tools to work with this tutorial.
 1. An Text-Editor (Notepad, Notepad++, Microsoft Code, what ever :) )
 2. And cmd or bash window. You can use the default Microsoft cmd or better a powershell session for running the commands. I will use GitBash in this tutorial.<br>
-Cygwin will be also okay. But its quite a huge think to install. If you have it and like it -> use it!
+Cygwin will also be okay. But it's quite a huge think to install but If you have it and like it -> use it!
 
 3. The "make"-Tool for Windows. I love the lightweight MinGW-Toolset. You can download it here: 
 [Download form sourceforge](https://sourceforge.net/projects/mingw/files/Installer/)<br>
