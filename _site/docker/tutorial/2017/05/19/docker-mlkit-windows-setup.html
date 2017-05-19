@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Docker, Moby and Linuxkit - A Windows Setup Tutorial</title>
+  <meta name="description" content="Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html">
+  <link rel="alternate" type="application/rss+xml" title="Welcome" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Welcome</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Docker, Moby and Linuxkit - A Windows Setup Tutorial</h1>
+    <p class="post-meta">
+      <time datetime="2017-05-19T21:05:00+02:00" itemprop="datePublished">
+        
+        May 19, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="installing-moby-project-and-linuxkit-on-windows--developer-machine">Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE</h1>
+
+<h4 id="pre-required">Pre-Required:</h4>
+<p>Windows10 Pro with Hyper-V and 60min of your time.</p>
+
+<p>Today I tried or better I installed the components are necessary to run Dockers mobyprojekt and linuxkit on windows.</p>
+
+<p>Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use GitBash or PowerShell to use make commands and stuff like that. So keep reading :).</p>
+
+<p><img src="https://media.giphy.com/media/WoWm8YzFQJg5i/giphy.gif?response_id=591f663d3fe17e6328d17717" alt="spongebob keep reading" /></p>
+
+<h4 id="before-you-can-start-">Before you can start …</h4>
+
+<p>Before we can start you should check your system environment is ready for it. We will need a couple of additional programs / tools to work with this tutorial.</p>
+<ol>
+  <li>An Text-Editor (Notepad, Notepad++, Microsoft Code, what ever :) )</li>
+  <li>
+    <p>And cmd or bash window. You can use the default Microsoft cmd or better a powershell session for running the commands. I will use GitBash in this tutorial.<br />
+Cygwin will be also okay. But its quite a huge think to install. If you have it and like it -&gt; use it!</p>
+  </li>
+  <li>The “make”-Tool for Windows. I love the lightweight MinGW-Toolset. You can download it here: 
+<a href="https://sourceforge.net/projects/mingw/files/Installer/">Download form sourceforge</a><br />
+<a href="http://www.mingw.org/">Projekt Website</a></li>
+</ol>
+
+<p>After the installation I did to additonal steps.</p>
+<ol>
+  <li>Add the path of the MinGW to my system path.</li>
+  <li>Rename the WinMake.exe into make.exe</li>
+</ol>
+
+<p>No we have a basic setup to start with this tutorial.</p>
+
+<h4 id="step-1-do-you-have-docker-for-windows-installed">Step 1: Do you have Docker for Windows installed?</h4>
+<p>If you have Docker for windows already installed you can go to step 2 now.</p>
+
+<p>If not: Let’s install Docker for Windows first. The installation process is quite strait forward.</p>
+
+<p><span style="color: red">WARNING: Your Compute will reboot 2 – 3 times! Save everything before starting the installation.</span></p>
+
+<ol>
+  <li>
+    <p>Download the latest Windows Installer from the Docker store.
+<a href="https://docs.docker.com/docker-for-windows/install/">Download Docker for Windows</a> and launch the installer.</p>
+  </li>
+  <li>
+    <p>Click on Install</p>
+  </li>
+</ol>
+
+<p><img src="http://localhost:4000/assets/1dockerinststart.jpg" alt="DockerInstall1" />
+<img src="http://localhost:4000/assets/1dockerinstfinish.jpg" alt="DockerInstall1" /></p>
+
+<p>If your Hyper-V Feature is not enabled, yet – Don’t worry. Docker will check that first before starts operating.</p>
+
+<p><img src="http://localhost:4000/assets/1dockerinsthypervmissing.jpg" alt="DockerInstall1" /></p>
+
+<p>Simply click “OK” to install the Feature. Your Computer will restart 2-3 times.</p>
+
+<p>After the reboots, you can find the docker whale in your status-bar. You can check the status by right clicking the icon -&gt; Settings.</p>
+
+<p><img src="http://localhost:4000/assets/1dockerinstwindow.jpg" alt="DockerInstall1" /></p>
+
+<p>Congratulations – Docker is now up and running and we can start with the Golang installation.</p>
+
+<h4 id="step-2-do-you-have-golang-installed">Step 2: Do you have Golang installed?</h4>
+
+<p>If so, go directly to Step 3.<br /></p>
+
+<p>You can find the Windows-Installer here:
+<a href="https://golang.org/dl/">Golang Windows Installer</a></p>
+
+<p>After installing you can check the go.exe is part of your global system path variable.<br />
+Just type go env in your command line tool (I will use Git Bash in my example).<br />
+Your output should look like this:</p>
+
+<p><img src="http://localhost:4000/assets/2goenv.jpg" alt="GoEnv" /></p>
+
+<p>Per default your GOPATH is not set globally. Have a look here how to set you GOPATH for windows globally.<br />
+<a href="https://github.com/golang/go/wiki/SettingGOPATH">Setting you Go Path</a></p>
+
+<p>After this step your GOPATH should be there globally. Now we are ready to download and build our moby and linuxkit binaries for windows.<br /></p>
+
+<p>For a better usage later on I added the $GOPATH/work/bin/ to my global system path as well.</p>
+
+<h4 id="step-3-dowload-and-install-linuxkit-and-moby-for-windows">Step 3. Dowload and install linuxkit and moby for Windows</h4>
+
+<p>There are several ways to install moby and linuxkit. Just have a look into the Github-Repo.
+<a href="https://github.com/linuxkit/linuxkit">Linuxkit @ Github</a></p>
+
+<p>You can download or clone the github repo and run make to build the binaries. Let’s have a look on that option.</p>
+
+<p>Create a directory somewhere on your drive and clone the linuxkit github repo into it.</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/linuxkit/linuxkit.git</code></pre></figure>
+
+<p>Now, we can start making the binaries.<br /></p>
+
+<p>On my machine the make process <span style="color: red"> failed</span>. Running make on the Makefile from the linuxkit I received the following error.</p>
+
+<p><img src="http://localhost:4000/assets/3linuxkitmakeerr.png" alt="Linuxkitmake error" /></p>
+
+<p>I will work on that error later and check whats wrong here. For me and now I decided to use the “go-way” building the binaries. Let’s rock.</p>
+
+<p>You can run the commands show in the linuxkit github repo.</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">go get -u github.com/moby/tool/cmd/moby
+get -u github.com/linuxkit/linuxkit/src/cmd/linuxkit</code></pre></figure>
+
+<p>These commands are just downloading the files! They are NOT complied now. So, let’s do it.<br />
+But wait?! Where are my sources? We did not specified any download path? Is it just magic? Now, not really. Have a look into to your Go envs. Navigate inside your GOPATH. Here they are. Go to 
+ <b>src/github.com/</b><br /></p>
+
+<p>Here you can see at least to folders. Moby and linuxkit. To build the binaries you can run the make command inside the moby or linuxkit directory (Lets keep it simple. The make command need a makefile. So let the make run where the Makefile is stored).</p>
+
+<p>The make command will output and golint error at the first run.</p>
+
+<p><img src="http://localhost:4000/assets/3linuxkitmakegoerr.png" alt="Linuxkitmake golint error" /></p>
+
+<p>To fix this just download the golint form github with our old fried <b>go –get</b>.<br />
+For more information, visit the github repo: <a href="https://github.com/golang/lint">Golang @ github </a></p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">go get -u github.com/golang/lint/golint</code></pre></figure>
+
+<p>Now you can run the make command inside the moby-directory again. You should have a moby.exe file in $GOPATH/work/bin/ now.</p>
+
+<p><img src="http://localhost:4000/assets/3golint.png" alt="Golint in binpath" /></p>
+
+<p>Congratulations! Moby and linuxkit are now working on your machine. Don’t trust me! I am a developer ;)  Better check it yourselfe.</p>
+
+<p>Note: You sould close your active cmd / bash window after adding your go-pathes to your global system variables.</p>
+
+<p>After this type moby and linuxkit after each other.</p>
+
+<p>Moby shows:</p>
+
+<p><img src="http://localhost:4000/assets/4mobyconsole.png" alt="moby test" /></p>
+
+<p>Linuxkit shows:</p>
+
+<p><img src="http://localhost:4000/assets/4linuxkitconsole.png" alt="linuxkit test" /></p>
+
+<h4 id="step-4-build-an-image-with-moby">Step 4: Build an image with moby.</h4>
+<p>Just to make it simple, we use an example.yml file for our teste. You can find the examples in the cloned github repo of linuxkit. Go into the examples directory and copy the yml-file into a new created test directory.</p>
+
+<p>So, now the “For Windows users only” things coming into the game!</p>
+
+<p>The linuxkit / mobyproject for Windows is not integrated in the tools yet. That means you are not able to to start your image with linuxkit run. There is a Powershell Script to close that gap and launch your moby builded images.</p>
+
+<p>Let’s start with building an iso to boot our HyperV-VM before we are looking into the powershell script.</p>
+
+<p>I copied the docker.yml linuxkit example file into a new directory. For a better understanding you should read the file and understand it. There is one line very important for us.</p>
+
+<p><img src="http://localhost:4000/assets/4dockerymledit.png" alt="docker.yml example file" /></p>
+
+<p>To make the iso runnable or adoptable for HyperV we need to change the output format:</p>
+
+<p>From kernler+initrd to iso-efi!
+For more information see the docs @ github:</p>
+
+<p><a href="https://github.com/linuxkit/linuxkit/blob/master/docs/yaml.md">https://github.com/linuxkit/linuxkit/blob/master/docs/yaml.md</a></p>
+
+<p>Now, we can start building our first moby-Image. Inside your docker example directory run</p>
+
+<p>moby build docker (Or the name of your yml-file). Your output should look like this:</p>
+
+<p><img src="http://localhost:4000/assets/5mobybuild.png" alt="moby build " /></p>
+
+<p>Congratulations, there is your first docker-efi.iso. Ready to create a HyperV-VM out from it.</p>
+
+<h4 id="step-5-start-your-moby-image-in-hyperv">Step 5. Start your moby-image in HyperV</h4>
+<p>As mentioned above, you <b>can’t</b> start your VM by typing linuxkit run. This is not supported, at the moment. Because of that you can find a script to create a HyperV-VM from the created iso-file.</p>
+
+<p>You can find the script in the linuxkit/scripts folder.</p>
+
+<p>It looks we need to create the VM first and can run it with LinuxKit.ps1 –Start. So, let’s create the VM.</p>
+
+<p>For this, I am using a Powershell-Session and run the LinuxKit.ps1 Script with the minimal set of inbound parameters.</p>
+
+<p>-IsoFile = Path to the moby created ISO-file <br />
+-Create = To create the machine <br /></p>
+
+<p><img src="http://localhost:4000/assets/6linuxkitpowershell1.png" alt="docker.yml example file" /></p>
+
+<p>Your output should look like this.</p>
+
+<p><img src="http://localhost:4000/assets/6linuxkitpowershell2.png" alt="docker.yml example file" /></p>
+
+<p>Now, you can see the created VM in your HyperV-Manager. Let’s check it out.</p>
+
+<p><img src="http://localhost:4000/assets/6hypervoff.png" alt="docker.yml example file" /></p>
+
+<p>Here they are. Let’s start the VM. We will use the script again and type</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">LinuxKit.ps1 –Start.</code></pre></figure>
+
+<p>Let’s check the HyperV-Manager again.</p>
+
+<p><img src="http://localhost:4000/assets/6hypervon.png" alt="docker.yml example file" /></p>
+
+<p>The moby builded VM is no up and running!</p>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Welcome</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Welcome
+            
+            </li>
+            
+            <li><a href="mailto:tippexs91@googlemail.com">tippexs91@googlemail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/tippexs"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">tippexs</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Welcome to my github-Blog. Stay connected an have fun while reading my tutorials and posts. If there are any &quot;alternative facts&quot; - please send me a message!
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

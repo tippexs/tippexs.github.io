@@ -1,14 +1,202 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-19T22:53:47+02:00</updated><id>http://localhost:4000/</id><title type="html">Welcome</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-</subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2017/05/19/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-05-19T21:05:00+02:00</published><updated>2017-05-19T21:05:00+02:00</updated><id>http://localhost:4000/jekyll/update/2017/05/19/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/05/19/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-20T00:28:56+02:00</updated><id>http://localhost:4000/</id><title type="html">Welcome</title><subtitle>Welcome to my github-Blog. Stay connected an have fun while reading my tutorials and posts. If there are any &quot;alternative facts&quot; - please send me a message!
+</subtitle><entry><title type="html">Docker, Moby and Linuxkit - A Windows Setup Tutorial</title><link href="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html" rel="alternate" type="text/html" title="Docker, Moby and Linuxkit - A Windows Setup Tutorial" /><published>2017-05-19T21:05:00+02:00</published><updated>2017-05-19T21:05:00+02:00</updated><id>http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup</id><content type="html" xml:base="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html">&lt;h1 id=&quot;installing-moby-project-and-linuxkit-on-windows--developer-machine&quot;&gt;Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE&lt;/h1&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;h4 id=&quot;pre-required&quot;&gt;Pre-Required:&lt;/h4&gt;
+&lt;p&gt;Windows10 Pro with Hyper-V and 60min of your time.&lt;/p&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;p&gt;Today I tried or better I installed the components are necessary to run Dockers mobyprojekt and linuxkit on windows.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;p&gt;Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use GitBash or PowerShell to use make commands and stuff like that. So keep reading :).&lt;/p&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/WoWm8YzFQJg5i/giphy.gif?response_id=591f663d3fe17e6328d17717&quot; alt=&quot;spongebob keep reading&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;before-you-can-start-&quot;&gt;Before you can start …&lt;/h4&gt;
+
+&lt;p&gt;Before we can start you should check your system environment is ready for it. We will need a couple of additional programs / tools to work with this tutorial.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;An Text-Editor (Notepad, Notepad++, Microsoft Code, what ever :) )&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;And cmd or bash window. You can use the default Microsoft cmd or better a powershell session for running the commands. I will use GitBash in this tutorial.&lt;br /&gt;
+Cygwin will be also okay. But its quite a huge think to install. If you have it and like it -&amp;gt; use it!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The “make”-Tool for Windows. I love the lightweight MinGW-Toolset. You can download it here: 
+&lt;a href=&quot;https://sourceforge.net/projects/mingw/files/Installer/&quot;&gt;Download form sourceforge&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://www.mingw.org/&quot;&gt;Projekt Website&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;After the installation I did to additonal steps.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add the path of the MinGW to my system path.&lt;/li&gt;
+  &lt;li&gt;Rename the WinMake.exe into make.exe&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;No we have a basic setup to start with this tutorial.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-1-do-you-have-docker-for-windows-installed&quot;&gt;Step 1: Do you have Docker for Windows installed?&lt;/h4&gt;
+&lt;p&gt;If you have Docker for windows already installed you can go to step 2 now.&lt;/p&gt;
+
+&lt;p&gt;If not: Let’s install Docker for Windows first. The installation process is quite strait forward.&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;color: red&quot;&gt;WARNING: Your Compute will reboot 2 – 3 times! Save everything before starting the installation.&lt;/span&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download the latest Windows Installer from the Docker store.
+&lt;a href=&quot;https://docs.docker.com/docker-for-windows/install/&quot;&gt;Download Docker for Windows&lt;/a&gt; and launch the installer.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Click on Install&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/1dockerinststart.jpg&quot; alt=&quot;DockerInstall1&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/1dockerinstfinish.jpg&quot; alt=&quot;DockerInstall1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If your Hyper-V Feature is not enabled, yet – Don’t worry. Docker will check that first before starts operating.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/1dockerinsthypervmissing.jpg&quot; alt=&quot;DockerInstall1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Simply click “OK” to install the Feature. Your Computer will restart 2-3 times.&lt;/p&gt;
+
+&lt;p&gt;After the reboots, you can find the docker whale in your status-bar. You can check the status by right clicking the icon -&amp;gt; Settings.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/1dockerinstwindow.jpg&quot; alt=&quot;DockerInstall1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Congratulations – Docker is now up and running and we can start with the Golang installation.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-2-do-you-have-golang-installed&quot;&gt;Step 2: Do you have Golang installed?&lt;/h4&gt;
+
+&lt;p&gt;If so, go directly to Step 3.&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can find the Windows-Installer here:
+&lt;a href=&quot;https://golang.org/dl/&quot;&gt;Golang Windows Installer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After installing you can check the go.exe is part of your global system path variable.&lt;br /&gt;
+Just type go env in your command line tool (I will use Git Bash in my example).&lt;br /&gt;
+Your output should look like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/2goenv.jpg&quot; alt=&quot;GoEnv&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Per default your GOPATH is not set globally. Have a look here how to set you GOPATH for windows globally.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/golang/go/wiki/SettingGOPATH&quot;&gt;Setting you Go Path&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After this step your GOPATH should be there globally. Now we are ready to download and build our moby and linuxkit binaries for windows.&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;For a better usage later on I added the $GOPATH/work/bin/ to my global system path as well.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-3-dowload-and-install-linuxkit-and-moby-for-windows&quot;&gt;Step 3. Dowload and install linuxkit and moby for Windows&lt;/h4&gt;
+
+&lt;p&gt;There are several ways to install moby and linuxkit. Just have a look into the Github-Repo.
+&lt;a href=&quot;https://github.com/linuxkit/linuxkit&quot;&gt;Linuxkit @ Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You can download or clone the github repo and run make to build the binaries. Let’s have a look on that option.&lt;/p&gt;
+
+&lt;p&gt;Create a directory somewhere on your drive and clone the linuxkit github repo into it.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;git clone https://github.com/linuxkit/linuxkit.git&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now, we can start making the binaries.&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;On my machine the make process &lt;span style=&quot;color: red&quot;&gt; failed&lt;/span&gt;. Running make on the Makefile from the linuxkit I received the following error.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/3linuxkitmakeerr.png&quot; alt=&quot;Linuxkitmake error&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I will work on that error later and check whats wrong here. For me and now I decided to use the “go-way” building the binaries. Let’s rock.&lt;/p&gt;
+
+&lt;p&gt;You can run the commands show in the linuxkit github repo.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;go get -u github.com/moby/tool/cmd/moby
+get -u github.com/linuxkit/linuxkit/src/cmd/linuxkit&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;These commands are just downloading the files! They are NOT complied now. So, let’s do it.&lt;br /&gt;
+But wait?! Where are my sources? We did not specified any download path? Is it just magic? Now, not really. Have a look into to your Go envs. Navigate inside your GOPATH. Here they are. Go to 
+ &lt;b&gt;src/github.com/&lt;/b&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here you can see at least to folders. Moby and linuxkit. To build the binaries you can run the make command inside the moby or linuxkit directory (Lets keep it simple. The make command need a makefile. So let the make run where the Makefile is stored).&lt;/p&gt;
+
+&lt;p&gt;The make command will output and golint error at the first run.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/3linuxkitmakegoerr.png&quot; alt=&quot;Linuxkitmake golint error&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To fix this just download the golint form github with our old fried &lt;b&gt;go –get&lt;/b&gt;.&lt;br /&gt;
+For more information, visit the github repo: &lt;a href=&quot;https://github.com/golang/lint&quot;&gt;Golang @ github &lt;/a&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;go get -u github.com/golang/lint/golint&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now you can run the make command inside the moby-directory again. You should have a moby.exe file in $GOPATH/work/bin/ now.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/3golint.png&quot; alt=&quot;Golint in binpath&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Congratulations! Moby and linuxkit are now working on your machine. Don’t trust me! I am a developer ;)  Better check it yourselfe.&lt;/p&gt;
+
+&lt;p&gt;Note: You sould close your active cmd / bash window after adding your go-pathes to your global system variables.&lt;/p&gt;
+
+&lt;p&gt;After this type moby and linuxkit after each other.&lt;/p&gt;
+
+&lt;p&gt;Moby shows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/4mobyconsole.png&quot; alt=&quot;moby test&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Linuxkit shows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/4linuxkitconsole.png&quot; alt=&quot;linuxkit test&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;step-4-build-an-image-with-moby&quot;&gt;Step 4: Build an image with moby.&lt;/h4&gt;
+&lt;p&gt;Just to make it simple, we use an example.yml file for our teste. You can find the examples in the cloned github repo of linuxkit. Go into the examples directory and copy the yml-file into a new created test directory.&lt;/p&gt;
+
+&lt;p&gt;So, now the “For Windows users only” things coming into the game!&lt;/p&gt;
+
+&lt;p&gt;The linuxkit / mobyproject for Windows is not integrated in the tools yet. That means you are not able to to start your image with linuxkit run. There is a Powershell Script to close that gap and launch your moby builded images.&lt;/p&gt;
+
+&lt;p&gt;Let’s start with building an iso to boot our HyperV-VM before we are looking into the powershell script.&lt;/p&gt;
+
+&lt;p&gt;I copied the docker.yml linuxkit example file into a new directory. For a better understanding you should read the file and understand it. There is one line very important for us.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/4dockerymledit.png&quot; alt=&quot;docker.yml example file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To make the iso runnable or adoptable for HyperV we need to change the output format:&lt;/p&gt;
+
+&lt;p&gt;From kernler+initrd to iso-efi!
+For more information see the docs @ github:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/linuxkit/linuxkit/blob/master/docs/yaml.md&quot;&gt;https://github.com/linuxkit/linuxkit/blob/master/docs/yaml.md&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, we can start building our first moby-Image. Inside your docker example directory run&lt;/p&gt;
+
+&lt;p&gt;moby build docker (Or the name of your yml-file). Your output should look like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/5mobybuild.png&quot; alt=&quot;moby build &quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Congratulations, there is your first docker-efi.iso. Ready to create a HyperV-VM out from it.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-5-start-your-moby-image-in-hyperv&quot;&gt;Step 5. Start your moby-image in HyperV&lt;/h4&gt;
+&lt;p&gt;As mentioned above, you &lt;b&gt;can’t&lt;/b&gt; start your VM by typing linuxkit run. This is not supported, at the moment. Because of that you can find a script to create a HyperV-VM from the created iso-file.&lt;/p&gt;
+
+&lt;p&gt;You can find the script in the linuxkit/scripts folder.&lt;/p&gt;
+
+&lt;p&gt;It looks we need to create the VM first and can run it with LinuxKit.ps1 –Start. So, let’s create the VM.&lt;/p&gt;
+
+&lt;p&gt;For this, I am using a Powershell-Session and run the LinuxKit.ps1 Script with the minimal set of inbound parameters.&lt;/p&gt;
+
+&lt;p&gt;-IsoFile = Path to the moby created ISO-file &lt;br /&gt;
+-Create = To create the machine &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/6linuxkitpowershell1.png&quot; alt=&quot;docker.yml example file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Your output should look like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/6linuxkitpowershell2.png&quot; alt=&quot;docker.yml example file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, you can see the created VM in your HyperV-Manager. Let’s check it out.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/6hypervoff.png&quot; alt=&quot;docker.yml example file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here they are. Let’s start the VM. We will use the script again and type&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;LinuxKit.ps1 –Start.&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Let’s check the HyperV-Manager again.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/6hypervon.png&quot; alt=&quot;docker.yml example file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The moby builded VM is no up and running!&lt;/p&gt;</content><author><name></name></author><summary type="html">Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE</summary></entry></feed>
