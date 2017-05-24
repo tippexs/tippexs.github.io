@@ -2,6 +2,7 @@
 layout: post
 title:  "Docker, Moby and Linuxkit - A Windows Setup Tutorial"
 date:   2017-05-19 21:05:00 +0200
+comments: true
 categories: docker tutorial
 ---
 
@@ -208,3 +209,33 @@ Let’s check the HyperV-Manager again.
 
 The moby builded VM is no up and running!
 
+{% if page.comments %}
+
+<div id="disqus_thread"></div>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+
+this.page.url = tippexs.github.io;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = docker-mlkit-windows-setup; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var disqus_developer = 1; // Comment out when the site is live
+var d = document, s = d.createElement('script');
+s.src = 'https://tippexs-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+{% endif %}
+
+
+
+<script id="dsq-count-scr" src="//tippexs-github-io.disqus.com/count.js" async></script>

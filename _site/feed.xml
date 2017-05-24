@@ -1,5 +1,314 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-20T00:28:56+02:00</updated><id>http://localhost:4000/</id><title type="html">Welcome</title><subtitle>Welcome to my github-Blog. Stay connected an have fun while reading my tutorials and posts. If there are any &quot;alternative facts&quot; - please send me a message!
-</subtitle><entry><title type="html">Docker, Moby and Linuxkit - A Windows Setup Tutorial</title><link href="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html" rel="alternate" type="text/html" title="Docker, Moby and Linuxkit - A Windows Setup Tutorial" /><published>2017-05-19T21:05:00+02:00</published><updated>2017-05-19T21:05:00+02:00</updated><id>http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup</id><content type="html" xml:base="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html">&lt;h1 id=&quot;installing-moby-project-and-linuxkit-on-windows--developer-machine&quot;&gt;Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-24T11:54:14+02:00</updated><id>http://localhost:4000/</id><title type="html">Welcome</title><subtitle>Welcome to my github-Blog. Stay connected an have fun while reading my tutorials and posts. If there are any &quot;alternative facts&quot; - please send me a message!
+</subtitle><entry><title type="html">PHP Platform on Docker</title><link href="http://localhost:4000/docker/tutorial/2017/05/24/phpplaftform-on-docker.html" rel="alternate" type="text/html" title="PHP Platform on Docker" /><published>2017-05-24T10:05:00+02:00</published><updated>2017-05-24T10:05:00+02:00</updated><id>http://localhost:4000/docker/tutorial/2017/05/24/phpplaftform-on-docker</id><content type="html" xml:base="http://localhost:4000/docker/tutorial/2017/05/24/phpplaftform-on-docker.html">&lt;h1 id=&quot;a-php-platform-docker-tutorial-to-make-php-runnable-in-docker&quot;&gt;A PHP-Platform Docker tutorial to make PHP runnable in Docker&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/elephant.gif&quot; alt=&quot;PHP Running&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First of all: I LOVE PHP! I am PHP-Developer for more then 12 years now and still love it like on the first day ;)&lt;/p&gt;
+
+&lt;p&gt;But a new “Darling” shown up 4 years ago. DOCKER! I don’t want to loos my PHP but I was also interested using Docker for my App-Servers and my Dev-Machine.&lt;/p&gt;
+
+&lt;p&gt;Because of this I decided to use PHP and Docker at the same time and what can I say: IT IS JUST AWESOME!&lt;/p&gt;
+
+&lt;p&gt;In this Tutorial i will show you the Setup on my Dev-Machine to develop PHP-Apps with PHP-FPM and NGINX.&lt;/p&gt;
+
+&lt;p&gt;#Prerequirements
+You have Docker installed already and know how Dockerfiles work.&lt;/p&gt;
+
+&lt;p&gt;WARNING: This setup is just for your Dev-Machine! Do not use it 1 to 1 on your production servers! I will post a second tutorial how to build this on production!&lt;/p&gt;
+
+&lt;p&gt;#Lets go!&lt;/p&gt;
+
+&lt;p&gt;Basically, we need two Docker-Images:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;PHP-FPM&lt;/li&gt;
+  &lt;li&gt;Nginx&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I build my own PHP-FPM5 and 7 images based on Alpine. You should create two directories phpfpm5 and phpfpm7 and create the Dockerfiles in it.&lt;/p&gt;
+
+&lt;h4 id=&quot;configfiles-for-php-fpm&quot;&gt;Configfiles for php-fpm.&lt;/h4&gt;
+
+&lt;p&gt;php-fpm.conf&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;[www]
+user = nobody
+group = nobody
+listen = [::]:9000
+chdir = /application
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+catch_workers_output = Yes&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;php.ini&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;date.timezone = &quot;UTC&quot;
+short_open_tag = Off
+session.auto_start = Off&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;dockerfile-php-fpm5&quot;&gt;Dockerfile PHP-FPM5&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;FROM alpine:3.5
+
+RUN apk --update add \
+        php5 \
+        php5-bcmath \
+        php5-dom \
+        php5-ctype \
+        php5-curl \
+        php5-fpm \
+        php5-gd \
+        php5-iconv \
+        php5-intl \
+        php5-json \
+        php5-mcrypt \
+        php5-opcache \
+        php5-openssl \
+        php5-pdo \
+        php5-pdo_mysql \
+        php5-pdo_pgsql \
+        php5-pdo_sqlite \
+        php5-phar \
+        php5-posix \
+        php5-soap \
+        php5-xml \
+    &amp;amp;&amp;amp; rm -rf /var/cache/apk/*
+
+COPY php.ini /etc/php5/conf.d/50-setting.ini
+COPY php-fpm.conf /etc/php5/php-fpm.conf
+
+EXPOSE 9000
+
+CMD [&quot;php-fpm&quot;, &quot;-F&quot;]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;dockerfile-php-fpm7&quot;&gt;Dockerfile PHP-FPM7&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;FROM alpine:edge
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' &amp;gt;&amp;gt; /etc/apk/repositories &amp;amp;&amp;amp; \
+    apk --update add \
+        php7 \
+        php7-bcmath \
+        php7-dom \
+        php7-ctype \
+        php7-curl \
+        php7-fileinfo \
+        php7-fpm \
+        php7-gd \
+        php7-iconv \
+        php7-intl \
+        php7-json \
+        php7-mbstring \
+        php7-mcrypt \
+        php7-mysqlnd \
+        php7-opcache \
+        php7-openssl \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-pdo_pgsql \
+        php7-pdo_sqlite \
+        php7-phar \
+        php7-posix \
+        php7-session \
+        php7-soap \
+        php7-xml \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-zip \
+    &amp;amp;&amp;amp; rm -rf /var/cache/apk/*
+
+COPY php.ini /etc/php7/conf.d/50-setting.ini
+COPY php-fpm.conf /etc/php7/php-fpm.conf
+
+EXPOSE 9000
+
+CMD [&quot;php-fpm7&quot;, &quot;-F&quot;]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Based on these Dockerfiles run a docker build command to build your images. Navigate into your directories and run&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; docker build -t tippexs/phpfpm7:1.0 .&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; docker build -t tippexs/phpfpm5:1.0 .&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;After this you should have two Docker images on your machine. You can see the new generated images by typing&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; docker images&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Your output should look like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;tippexe/phpfpm5        1.0                 818a198d3c00        6 days ago          82 MB
+tippexe/phpfpm7        1.0                 21ccb78f50bb        6 days ago          67.7 MB&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Before we run the PHP-Containers we should setup the NGINX-Webserver and link it to the PHP-FPM Container.&lt;/p&gt;
+
+&lt;h4 id=&quot;build-your-nginx-container&quot;&gt;Build your NGINX Container&lt;/h4&gt;
+&lt;p&gt;nginx configuration file&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   /var/www;
+        index  index.php index.html index.htm;
+    }
+
+    error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location ~ \.(php)$ {
+       	fastcgi_pass php:9000;
+        fastcgi_param DOCUMENT_ROOT   /application;
+        fastcgi_param SCRIPT_FILENAME /application$fastcgi_script_name;
+	    include /etc/nginx/fastcgi_params;
+    }
+
+
+}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Dockerfile nginx&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;FROM nginx:latest 
+COPY conf/nginx.conf /etc/nginx/conf.d/app.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You can build your Docker Image in the same way you built your PHP-FPM Images. Navigate into the directory and run docker build. Don’t forget to label your build ;).&lt;/p&gt;
+
+&lt;h4 id=&quot;run-your-containers&quot;&gt;Run your Containers&lt;/h4&gt;
+
+&lt;p&gt;Make sure you have at least 2 images. NGINX and PHP-FPM.&lt;/p&gt;
+
+&lt;p&gt;Now we can run our containers. Very important at this point is the fact we need to link the containers against each other and allow them to talk.&lt;/p&gt;
+
+&lt;p&gt;First, start your PHP-FPM container. In my case PHP-FPM7.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; docker run --name php -d -v /var/www/myapphome:/application tippexe/phpfpm7:1.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The –name is important to link our containers. I case this is completely new to you read the docs.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/engine/userguide/networking/&quot;&gt;Docker container networking&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;There was or still is a CLI-command –link. This i depracted and should not be used anymore. Therefore you should create a User-defined bridged network for your containers.&lt;/p&gt;
+
+&lt;p&gt;[Docker User-defined networks] (https://docs.docker.com/engine/userguide/networking/#user-defined-networks)&lt;/p&gt;
+
+&lt;p&gt;I did this by typing:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; docker network create --driver bridge dev&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now you should have a User-defined bridged dev network (Isn’t that a perfect word for hangman: “userdefinedbridgeddevnetwork” :D)&lt;/p&gt;
+
+&lt;p&gt;List your networks by typing docker network ls.&lt;/p&gt;
+
+&lt;p&gt;Now, finally!, let’s start our containers.&lt;/p&gt;
+
+&lt;p&gt;Important: Start your PHP-FPM first.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;docker run --name=php --network=dev -itd -v /var/docker/audi_nginx/apphome:/application tippexs/phpfpm7:1.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now, start your NGINX webserver&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;docker run --network=dev -itd -p 80:80 --name=web -v /var/www/mywebapps/apphome:/var/www tippexs/nginx:1.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Let’s have a look if it works:&lt;/p&gt;
+
+&lt;p&gt;Type docker ps to list your running container instances. You should have two containers up &amp;amp; running.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
+072945924b22        tippexs/phpfpm5:1.0    &quot;php-fpm -F&quot;             55 seconds ago      Up 55 seconds       9000/tcp             php
+b4bc295200e7        tippexs/nginx:1.0      &quot;nginx -g 'daemon ...&quot;   5 minutes ago       Up 5 minutes        0.0.0.0:80-&amp;gt;80/tcp   web&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Awesome! That looks good. Now lets see what webapp we are running, currently.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/dockerphp_webapp.png&quot; alt=&quot;docker webapp example image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To change the PHP-FPM for example just kill and remove the running PHP-FPM container instance and run the other PHP-FPM container.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-to-do-this&quot;&gt;How to do this?&lt;/h4&gt;
+&lt;p&gt;simply run docker ps to list your running containers (As we did it a lately to check our running containers). Each running container has an unique container-id. To kill and remove the container you can run&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;docker kill 072945924b22 &amp;amp;&amp;amp; docker rm 072945924b22&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;whats-next&quot;&gt;What’s next&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;A PHP and Docker production Tutorial i a new Post.&lt;/li&gt;
+  &lt;li&gt;Use Pear and Pecl with PHP-FPM on alpine-linux Base-Images&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you have any questions or commands feel free to leave a comment.&lt;/p&gt;
+
+&lt;div id=&quot;disqus_thread&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+
+this.page.url = tippexs.github.io;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = phpplatform-on-docker; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var disqus_developer = 1; // Comment out when the site is live
+var d = document, s = d.createElement('script');
+s.src = 'https://tippexs-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+&lt;/script&gt;
+
+&lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
+
+&lt;script id=&quot;dsq-count-scr&quot; src=&quot;//tippexs-github-io.disqus.com/count.js&quot; async=&quot;&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">A PHP-Platform Docker tutorial to make PHP runnable in Docker</summary></entry><entry><title type="html">Softwaredevelopment and Docker</title><link href="http://localhost:4000/docker/tutorial/2017/05/19/softwaredev-cloud-and-docker.html" rel="alternate" type="text/html" title="Softwaredevelopment and Docker" /><published>2017-05-19T21:05:00+02:00</published><updated>2017-05-19T21:05:00+02:00</updated><id>http://localhost:4000/docker/tutorial/2017/05/19/softwaredev-cloud-and-docker</id><content type="html" xml:base="http://localhost:4000/docker/tutorial/2017/05/19/softwaredev-cloud-and-docker.html">&lt;h1 id=&quot;softwaredevelopment-and-docker---audi-cloud-day-presentation&quot;&gt;Softwaredevelopment and Docker - Audi Cloud Day Presentation&lt;/h1&gt;
+&lt;h2 id=&quot;is-the-cloud-changing-the-process-of-softwaredevlopment&quot;&gt;Is the Cloud changing the process of softwaredevlopment?&lt;/h2&gt;
+
+&lt;p&gt;In fact, yes it changed a lot during the last years.&lt;/p&gt;
+
+&lt;p&gt;I was able to speak at the Audi Cloud-Day, yesterday and introduced softwaredevelopment in the cloud and the Docker basics.&lt;/p&gt;
+
+&lt;p&gt;The PDF is the presentation. There were a couple of basic questions. Let me name a few here:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Why are Docker container so different from virtual machines?! They have a OS included, as well?!&lt;/li&gt;
+  &lt;li&gt;How can I build containers and what are layers?&lt;/li&gt;
+  &lt;li&gt;Can I use a custom OS-Image (patched, customized, … ) and create a Docker Base-Image form it?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For these people asked that questions - give me a couple of days, please. I will update my Blog and share the Information with you and others here as soon as possible.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://localhost:4000/assets/swdevanddocker.pdf&quot;&gt;get the PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;div id=&quot;disqus_thread&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+
+this.page.url = tippexs.github.io;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = do; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var disqus_developer = 1; // Comment out when the site is live
+var d = document, s = d.createElement('script');
+s.src = 'https://tippexs-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+&lt;/script&gt;
+
+&lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
+
+&lt;script id=&quot;dsq-count-scr&quot; src=&quot;//tippexs-github-io.disqus.com/count.js&quot; async=&quot;&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Softwaredevelopment and Docker - Audi Cloud Day Presentation Is the Cloud changing the process of softwaredevlopment?</summary></entry><entry><title type="html">Docker, Moby and Linuxkit - A Windows Setup Tutorial</title><link href="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html" rel="alternate" type="text/html" title="Docker, Moby and Linuxkit - A Windows Setup Tutorial" /><published>2017-05-19T21:05:00+02:00</published><updated>2017-05-19T21:05:00+02:00</updated><id>http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup</id><content type="html" xml:base="http://localhost:4000/docker/tutorial/2017/05/19/docker-mlkit-windows-setup.html">&lt;h1 id=&quot;installing-moby-project-and-linuxkit-on-windows--developer-machine&quot;&gt;Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE&lt;/h1&gt;
 
 &lt;h4 id=&quot;pre-required&quot;&gt;Pre-Required:&lt;/h4&gt;
 &lt;p&gt;Windows10 Pro with Hyper-V and 60min of your time.&lt;/p&gt;
@@ -199,4 +508,29 @@ For more information see the docs @ github:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/6hypervon.png&quot; alt=&quot;docker.yml example file&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;The moby builded VM is no up and running!&lt;/p&gt;</content><author><name></name></author><summary type="html">Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE</summary></entry></feed>
+&lt;p&gt;The moby builded VM is no up and running!&lt;/p&gt;
+
+&lt;div id=&quot;disqus_thread&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+
+this.page.url = tippexs.github.io;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = docker-mlkit-windows-setup; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var disqus_developer = 1; // Comment out when the site is live
+var d = document, s = d.createElement('script');
+s.src = 'https://tippexs-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+&lt;/script&gt;
+
+&lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
+
+&lt;script id=&quot;dsq-count-scr&quot; src=&quot;//tippexs-github-io.disqus.com/count.js&quot; async=&quot;&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Installing Moby project and linuxkit on Windows – DEVELOPER MACHINE</summary></entry></feed>

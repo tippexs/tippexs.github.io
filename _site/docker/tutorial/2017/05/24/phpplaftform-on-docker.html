@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>PHP Platform on Docker</title>
+  <meta name="description" content="A PHP-Platform Docker tutorial to make PHP runnable in Docker">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/docker/tutorial/2017/05/24/phpplaftform-on-docker.html">
+  <link rel="alternate" type="application/rss+xml" title="Welcome" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Welcome</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">PHP Platform on Docker</h1>
+    <p class="post-meta">
+      <time datetime="2017-05-24T10:05:00+02:00" itemprop="datePublished">
+        
+        May 24, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="a-php-platform-docker-tutorial-to-make-php-runnable-in-docker">A PHP-Platform Docker tutorial to make PHP runnable in Docker</h1>
+
+<p><img src="http://localhost:4000/assets/elephant.gif" alt="PHP Running" /></p>
+
+<p>First of all: I LOVE PHP! I am PHP-Developer for more then 12 years now and still love it like on the first day ;)</p>
+
+<p>But a new “Darling” shown up 4 years ago. DOCKER! I don’t want to loos my PHP but I was also interested using Docker for my App-Servers and my Dev-Machine.</p>
+
+<p>Because of this I decided to use PHP and Docker at the same time and what can I say: IT IS JUST AWESOME!</p>
+
+<p>In this Tutorial i will show you the Setup on my Dev-Machine to develop PHP-Apps with PHP-FPM and NGINX.</p>
+
+<p>#Prerequirements
+You have Docker installed already and know how Dockerfiles work.</p>
+
+<p>WARNING: This setup is just for your Dev-Machine! Do not use it 1 to 1 on your production servers! I will post a second tutorial how to build this on production!</p>
+
+<p>#Lets go!</p>
+
+<p>Basically, we need two Docker-Images:</p>
+<ul>
+  <li>PHP-FPM</li>
+  <li>Nginx</li>
+</ul>
+
+<p>I build my own PHP-FPM5 and 7 images based on Alpine. You should create two directories phpfpm5 and phpfpm7 and create the Dockerfiles in it.</p>
+
+<h4 id="configfiles-for-php-fpm">Configfiles for php-fpm.</h4>
+
+<p>php-fpm.conf</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">[www]
+user = nobody
+group = nobody
+listen = [::]:9000
+chdir = /application
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+catch_workers_output = Yes</code></pre></figure>
+
+<p>php.ini</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">date.timezone = "UTC"
+short_open_tag = Off
+session.auto_start = Off</code></pre></figure>
+
+<h4 id="dockerfile-php-fpm5">Dockerfile PHP-FPM5</h4>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">FROM alpine:3.5
+
+RUN apk --update add \
+        php5 \
+        php5-bcmath \
+        php5-dom \
+        php5-ctype \
+        php5-curl \
+        php5-fpm \
+        php5-gd \
+        php5-iconv \
+        php5-intl \
+        php5-json \
+        php5-mcrypt \
+        php5-opcache \
+        php5-openssl \
+        php5-pdo \
+        php5-pdo_mysql \
+        php5-pdo_pgsql \
+        php5-pdo_sqlite \
+        php5-phar \
+        php5-posix \
+        php5-soap \
+        php5-xml \
+    &amp;&amp; rm -rf /var/cache/apk/*
+
+COPY php.ini /etc/php5/conf.d/50-setting.ini
+COPY php-fpm.conf /etc/php5/php-fpm.conf
+
+EXPOSE 9000
+
+CMD ["php-fpm", "-F"]</code></pre></figure>
+
+<h4 id="dockerfile-php-fpm7">Dockerfile PHP-FPM7</h4>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">FROM alpine:edge
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' &gt;&gt; /etc/apk/repositories &amp;&amp; \
+    apk --update add \
+        php7 \
+        php7-bcmath \
+        php7-dom \
+        php7-ctype \
+        php7-curl \
+        php7-fileinfo \
+        php7-fpm \
+        php7-gd \
+        php7-iconv \
+        php7-intl \
+        php7-json \
+        php7-mbstring \
+        php7-mcrypt \
+        php7-mysqlnd \
+        php7-opcache \
+        php7-openssl \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-pdo_pgsql \
+        php7-pdo_sqlite \
+        php7-phar \
+        php7-posix \
+        php7-session \
+        php7-soap \
+        php7-xml \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-zip \
+    &amp;&amp; rm -rf /var/cache/apk/*
+
+COPY php.ini /etc/php7/conf.d/50-setting.ini
+COPY php-fpm.conf /etc/php7/php-fpm.conf
+
+EXPOSE 9000
+
+CMD ["php-fpm7", "-F"]</code></pre></figure>
+
+<p>Based on these Dockerfiles run a docker build command to build your images. Navigate into your directories and run</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"> docker build -t tippexs/phpfpm7:1.0 .</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"> docker build -t tippexs/phpfpm5:1.0 .</code></pre></figure>
+
+<p>After this you should have two Docker images on your machine. You can see the new generated images by typing</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"> docker images</code></pre></figure>
+
+<p>Your output should look like this:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">tippexe/phpfpm5        1.0                 818a198d3c00        6 days ago          82 MB
+tippexe/phpfpm7        1.0                 21ccb78f50bb        6 days ago          67.7 MB</code></pre></figure>
+
+<p>Before we run the PHP-Containers we should setup the NGINX-Webserver and link it to the PHP-FPM Container.</p>
+
+<h4 id="build-your-nginx-container">Build your NGINX Container</h4>
+<p>nginx configuration file</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   /var/www;
+        index  index.php index.html index.htm;
+    }
+
+    error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location ~ \.(php)$ {
+       	fastcgi_pass php:9000;
+        fastcgi_param DOCUMENT_ROOT   /application;
+        fastcgi_param SCRIPT_FILENAME /application$fastcgi_script_name;
+	    include /etc/nginx/fastcgi_params;
+    }
+
+
+}</code></pre></figure>
+
+<p>Dockerfile nginx</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">FROM nginx:latest 
+COPY conf/nginx.conf /etc/nginx/conf.d/app.conf</code></pre></figure>
+
+<p>You can build your Docker Image in the same way you built your PHP-FPM Images. Navigate into the directory and run docker build. Don’t forget to label your build ;).</p>
+
+<h4 id="run-your-containers">Run your Containers</h4>
+
+<p>Make sure you have at least 2 images. NGINX and PHP-FPM.</p>
+
+<p>Now we can run our containers. Very important at this point is the fact we need to link the containers against each other and allow them to talk.</p>
+
+<p>First, start your PHP-FPM container. In my case PHP-FPM7.</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"> docker run --name php -d -v /var/www/myapphome:/application tippexe/phpfpm7:1.0</code></pre></figure>
+
+<p>The –name is important to link our containers. I case this is completely new to you read the docs.</p>
+
+<p><a href="https://docs.docker.com/engine/userguide/networking/">Docker container networking</a></p>
+
+<p>There was or still is a CLI-command –link. This i depracted and should not be used anymore. Therefore you should create a User-defined bridged network for your containers.</p>
+
+<p>[Docker User-defined networks] (https://docs.docker.com/engine/userguide/networking/#user-defined-networks)</p>
+
+<p>I did this by typing:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"> docker network create --driver bridge dev</code></pre></figure>
+
+<p>Now you should have a User-defined bridged dev network (Isn’t that a perfect word for hangman: “userdefinedbridgeddevnetwork” :D)</p>
+
+<p>List your networks by typing docker network ls.</p>
+
+<p>Now, finally!, let’s start our containers.</p>
+
+<p>Important: Start your PHP-FPM first.</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">docker run --name=php --network=dev -itd -v /var/docker/audi_nginx/apphome:/application tippexs/phpfpm7:1.0</code></pre></figure>
+
+<p>Now, start your NGINX webserver</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">docker run --network=dev -itd -p 80:80 --name=web -v /var/www/mywebapps/apphome:/var/www tippexs/nginx:1.0</code></pre></figure>
+
+<p>Let’s have a look if it works:</p>
+
+<p>Type docker ps to list your running container instances. You should have two containers up &amp; running.</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
+072945924b22        tippexs/phpfpm5:1.0    "php-fpm -F"             55 seconds ago      Up 55 seconds       9000/tcp             php
+b4bc295200e7        tippexs/nginx:1.0      "nginx -g 'daemon ..."   5 minutes ago       Up 5 minutes        0.0.0.0:80-&gt;80/tcp   web</code></pre></figure>
+
+<p>Awesome! That looks good. Now lets see what webapp we are running, currently.</p>
+
+<p><img src="http://localhost:4000/assets/dockerphp_webapp.png" alt="docker webapp example image" /></p>
+
+<p>To change the PHP-FPM for example just kill and remove the running PHP-FPM container instance and run the other PHP-FPM container.</p>
+
+<h4 id="how-to-do-this">How to do this?</h4>
+<p>simply run docker ps to list your running containers (As we did it a lately to check our running containers). Each running container has an unique container-id. To kill and remove the container you can run</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">docker kill 072945924b22 &amp;&amp; docker rm 072945924b22</code></pre></figure>
+
+<h4 id="whats-next">What’s next</h4>
+<ol>
+  <li>A PHP and Docker production Tutorial i a new Post.</li>
+  <li>Use Pear and Pecl with PHP-FPM on alpine-linux Base-Images</li>
+</ol>
+
+<p>If you have any questions or commands feel free to leave a comment.</p>
+
+<div id="disqus_thread"></div>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+
+this.page.url = tippexs.github.io;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = phpplatform-on-docker; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var disqus_developer = 1; // Comment out when the site is live
+var d = document, s = d.createElement('script');
+s.src = 'https://tippexs-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script id="dsq-count-scr" src="//tippexs-github-io.disqus.com/count.js" async=""></script>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Welcome</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Welcome
+            
+            </li>
+            
+            <li><a href="mailto:tippexs91@googlemail.com">tippexs91@googlemail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/tippexs"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">tippexs</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Welcome to my github-Blog. Stay connected an have fun while reading my tutorials and posts. If there are any &quot;alternative facts&quot; - please send me a message!
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
