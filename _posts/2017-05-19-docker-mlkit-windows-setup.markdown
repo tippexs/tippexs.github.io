@@ -224,7 +224,6 @@ this.page.identifier = docker-mlkit-windows-setup; // Replace PAGE_IDENTIFIER wi
 };
 */
 (function() { // DON'T EDIT BELOW THIS LINE
-var disqus_developer = 1; // Comment out when the site is live
 var d = document, s = d.createElement('script');
 s.src = 'https://tippexs-github-io.disqus.com/embed.js';
 s.setAttribute('data-timestamp', +new Date());

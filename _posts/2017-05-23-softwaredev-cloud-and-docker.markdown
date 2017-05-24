@@ -39,7 +39,6 @@ this.page.identifier = do; // Replace PAGE_IDENTIFIER with your page's unique id
 };
 */
 (function() { // DON'T EDIT BELOW THIS LINE
-var disqus_developer = 1; // Comment out when the site is live
 var d = document, s = d.createElement('script');
 s.src = 'https://tippexs-github-io.disqus.com/embed.js';
 s.setAttribute('data-timestamp', +new Date());
