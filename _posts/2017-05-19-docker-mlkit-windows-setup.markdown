@@ -11,19 +11,18 @@ categories: docker tutorial
 #### Pre-Required:
   Windows10 Pro with Hyper-V and 60min of your time.
 
+Today, I tried or better I installed the components are necessary to run Docker's Moby Project and linuxkit on Windows.
 
-Today I tried or better I installed the components are necessary to run Dockers mobyprojekt and linuxkit on windows.
-
-Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use GitBash or PowerShell to use make commands and stuff like that. So keep reading :).
+Before we can start building an image we should check a couple of pre-requirements first. I will also describe how to use Git Bash or PowerShell to fire commands and stuff like that. So keep reading :)
 
 ![spongebob keep reading](https://media.giphy.com/media/WoWm8YzFQJg5i/giphy.gif?response_id=591f663d3fe17e6328d17717)
 
 #### Before you can start ... 
 
-Before we can start you should check your system environment is ready for it. We will need a couple of additional programs / tools to work with this tutorial.
+Before we can start you need to make sure your system environment is ready to go. We will need a couple of additional programs / tools to work with this tutorial.
 1. An Text-Editor (Notepad, Notepad++, Microsoft Code, what ever :) )
 2. And cmd or bash window. You can use the default Microsoft cmd or better a powershell session for running the commands. I will use GitBash in this tutorial.<br>
-Cygwin will be also okay. But its quite a huge think to install. If you have it and like it -> use it!
+Cygwin will also be okay. But it's quite a huge think to install but If you have it and like it -> use it!
 
 3. The "make"-Tool for Windows. I love the lightweight MinGW-Toolset. You can download it here: 
 [Download form sourceforge](https://sourceforge.net/projects/mingw/files/Installer/)<br>
@@ -102,7 +101,10 @@ On my machine the make process <span style="color: red"> failed</span>. Running 
 
 ![Linuxkitmake error]({{ site.url }}/assets/3linuxkitmakeerr.png)
 
-I will work on that error later and check whats wrong here. For me and now I decided to use the “go-way” building the binaries. Let's rock.
+I will work on that error later and check whats wrong here.
+Update: [#1863](https://github.com/linuxkit/linuxkit/issues/1863) opened. The Makefile is using an incorrect GOOS value.
+
+For me and now I decided to use the “go-way” building the binaries. Let's rock.
 
 You can run the commands show in the linuxkit github repo.
 
@@ -123,16 +125,16 @@ The make command will output and golint error at the first run.
 ![Linuxkitmake golint error]({{ site.url }}/assets/3linuxkitmakegoerr.png)
 
 To fix this just download the golint form github with our old fried <b>go –get</b>.<br>
-For more information, visit the github repo: [Golang @ github ](https://github.com/golang/lint)
+For more information, visit the github repo: [Golang @ GitHub](https://github.com/golang/lint)
 {% highlight text %}
 go get -u github.com/golang/lint/golint
 {% endhighlight %}
 
-Now you can run the make command inside the moby-directory again. You should have a moby.exe file in $GOPATH/work/bin/ now.
+Now you can run the make command inside the moby directory again. You should have a moby.exe file in `$GOPATH/work/bin/` now.
 
 ![Golint in binpath]({{ site.url }}/assets/3golint.png)
 
-Congratulations! Moby and linuxkit are now working on your machine. Don’t trust me! I am a developer ;)  Better check it yourselfe.
+Congratulations! Moby and linuxkit are now working on your machine. Don’t trust me! I am a developer ;)  Better check it yourself.
 
 Note: You sould close your active cmd / bash window after adding your go-pathes to your global system variables.
 
@@ -146,8 +148,8 @@ Linuxkit shows:
 
 ![linuxkit test]({{ site.url }}/assets/4linuxkitconsole.png)
 
-#### Step 4: Build an image with moby.
-Just to make it simple, we use an example.yml file for our teste. You can find the examples in the cloned github repo of linuxkit. Go into the examples directory and copy the yml-file into a new created test directory.
+#### Step 4: Build an image with Moby.
+Just to make it simple, we use an example.yml file for our teste. You can find the examples in the cloned GitHub repo of linuxkit. Go into the examples directory and copy the yml-file into a new created test directory.
 
 So, now the “For Windows users only” things coming into the game!
 
@@ -161,7 +163,7 @@ I copied the docker.yml linuxkit example file into a new directory. For a better
 
 To make the iso runnable or adoptable for HyperV we need to change the output format:
 
-From kernler+initrd to iso-efi!
+From `kernel+initrd` to `iso-efi`.
 For more information see the docs @ github:
 
 [https://github.com/linuxkit/linuxkit/blob/master/docs/yaml.md](https://github.com/linuxkit/linuxkit/blob/master/docs/yaml.md)
@@ -193,7 +195,7 @@ Your output should look like this.
 
 ![docker.yml example file]({{ site.url }}/assets/6linuxkitpowershell2.png)
 
-Now, you can see the created VM in your HyperV-Manager. Let’s check it out.
+Now, you can see the created VM in your HyperV Manager. Let’s check it out.
 
 
 ![docker.yml example file]({{ site.url }}/assets/6hypervoff.png)
@@ -203,7 +205,7 @@ Here they are. Let’s start the VM. We will use the script again and type
 LinuxKit.ps1 –Start.
 {% endhighlight %}
 
-Let’s check the HyperV-Manager again.
+Let’s check the HyperV Manager again.
 
 ![docker.yml example file]({{ site.url }}/assets/6hypervon.png)
 
